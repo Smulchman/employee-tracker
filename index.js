@@ -1,35 +1,39 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2')
 
+const testFunction = () => {
+    console.log("testFunction success!")
+};
+
 const firstChoices = [
     {
         name: "View all departments",
-        value: { function: "" },
+        value: {fn: testFunction},
         short: "View all departments:"
     },
     {
         name: "View all roles",
-        value: { function: "" },
+        value: {fn: testFunction},
         short: "View all roles:"
     },
     {
         name: "View all employees",
-        value: { function: "" },
+        value: {fn: testFunction},
         short: "View all employees:"
     },
     {
         name: "Add a department",
-        value: { function: "" },
+        value: {fn: testFunction},
         short: "Add a department:"
     },
     {
         name: "Add a role",
-        value: "function",
+        value: {fn: testFunction},
         short: "Add a role:"
     },
     {
         name: "Add an employee",
-        value: { function: "" },
+        value: {fn: testFunction},
         short: "Add an employee:"
     },
 ];
@@ -40,12 +44,13 @@ inquirer
       type: 'list',
       message: 'What would you like to do?',
       choices: firstChoices,
-      name: 'Initialize',
+      name: 'initialize',
     }
   ])
   .then((data) =>
-    console.log(data)
-    // confirm === password
-    //   ? console.log('Success!')
-    //   : console.log('You forgot your password already?!')
+    data.initialize.fn()
   );
+
+  function viewDepts() {
+    
+  };
