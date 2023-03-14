@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS CREATE DATABASE business_db;
+DROP DATABASE IF EXISTS business_db;
 CREATE DATABASE business_db;
 USE business_db;
 
@@ -20,8 +20,7 @@ CREATE TABLE employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    dept_id INT NOT NULL,
+    role_id INT NOT NULL,
     manager_id INT,
-    FOREIGN KEY (dept_id) REFERENCES departments(id),
-    FOREIGN KEY (manager_id) REFERENCES employees(id)
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
