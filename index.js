@@ -1,5 +1,7 @@
-const inquirer = require("inquirer");
-const mysql = require("mysql2");
+// const inquirer = require("inquirer");
+// const mysql = require("mysql2");
+import inquirer from "inquirer";
+import mysql from "mysql2";
 
 // using mysql2 to connect to my local sql server.
 const db = mysql.createConnection(
@@ -12,9 +14,9 @@ const db = mysql.createConnection(
   console.log(`Connected to the movies database.`)
 );
 
-const testFunction = () => {
-  console.log("testFunction success!");
-};
+// const testFunction = () => {
+//   console.log("testFunction success!");
+// };
 
 // This list is the array inquirer uses to display user choices on initialization
 // the value key pair is an object because, for whatever reason, when it linked the function directly, it did not actually link the function. It works when it one layer deeper into an object so that's how it is.
@@ -159,13 +161,14 @@ function addRole() {
         name: "roleDept",
       },
     ])
-    .then((data) => {
-      var tempID = getDeptId(data.roleDept);
+    .then(async (data) => {
+      var tempID = await getDeptId(data.roleDept);
       data.id = tempID;
       return data;
     })
     // this second function was an attempt to eliminate what I think/ thought might be a problem with synchronicity
     // while this did not solve my troubles, it did still work and so it remains.
+    // I'd like to note as well that, since I am using asynchronicity in other places, I could make this inquiry chain async as well but as they say "if it aint broke, dont fix it." 
     .then((data) => {
       db.query(
         `INSERT INTO roles (title, salary, dept_id) VALUES ('${data.roleName}', ${data.roleSalary}, ${data.id})`,
@@ -192,8 +195,8 @@ function addEmployee() {
       },
     ])
     .then((data) => {
-        return;
-    //   db.query();
+      return;
+      //   db.query();
     });
 }
 
@@ -204,39 +207,37 @@ function updateRole() {}
 // this function caused me immense trouble. From what I could gather, I was getting a sync error so I made a brief effort to set the function up as async but gave up for the sake of time. The code commented out below was my non async attempt.
 // Essentially console logging data was giving me either an Object or undefined. The sql code in the string works in mysql and the query itself does properly give the value, albeit in an object inside an array.
 // The problem was getting that value out of the fb.query and into the rest of the function. I just could not get it to work.
-function getDeptId(deptName) {
-  //   let data = db.query(
-  //     `SELECT id FROM departments WHERE name='${deptName}'`).then(
-  //     (err, result) => {
-  //       if (err) {
-  //         console.error(err);
-  //         return 0;
-  //       }
-  //       console.log(result);
-  //       return result[0].id;
-  //     }
-  //   )
-  //   console.log(data)
-  //   return data;
-  let id;
-  switch (deptName) {
-    case "Finance":
-      id = 1;
-      break;
-    case "Human Relations":
-      id = 2;
-      break;
-    case "Sales":
-      id = 3;
-      break;
-    case "Executive Management":
-      id = 4;
-      break;
-    default:
-      id = 0;
+// function getDeptId(deptName) {
+//     let data = db.query(
+//       `SELECT id FROM departments WHERE name='${deptName}'`).then(
+//       (err, result) => {
+//         if (err) {
+//           console.error(err);
+//           return 0;
+//         }
+//         console.log(result);
+//         return result[0].id;
+//       }
+//     )
+//     console.log(data)
+//     return data;
+// }
+
+// this function was added during office hours by Max Ohsawa
+// My original attempt is still visible above commented out
+async function getDeptId(deptName) {
+  try {
+    const [[{ id }]] = await db
+      .promise()
+      .query(`SELECT id FROM departments WHERE name='${deptName}'`);
+    return id;
+  } catch (error) {
+    console.log(`did not find specified deptartment ${deptName}`);
+    return 0;
   }
-  console.log(id);
-  return id;
 }
+
+// const result = await getDeptId2('Puters');
+// console.log(result);
 
 initialize();
