@@ -82,7 +82,11 @@ function viewRoles() {
 }
 
 function viewEmployees() {
-  db.query(`SELECT * FROM employees`, (err, result) => {
+  db.query(`SELECT employee.id, employee.first_name, employee.last_name, roles.title, roles.salary, departments.name AS department, CONCAT(manager.first_name,' ',manager.last_name) AS manager 
+  FROM Employees employee
+  JOIN roles ON employee.role_id = roles.id
+  JOIN departments ON roles.dept_id = departments.id
+  LEFT JOIN Employees manager ON employee.manager_id = manager.id;`, (err, result) => {
     if (err) {
       console.error(err);
     }
