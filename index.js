@@ -33,7 +33,7 @@ const firstChoices = [
   },
   {
     name: "Add a department",
-    value: { fn: testFunction },
+    value: { fn: addDept },
     short: "Add a department:",
   },
   {
@@ -89,6 +89,30 @@ function viewEmployees() {
     console.table(result);
     initialize();
   });
+}
+
+function addDept() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Please enter a name for the department",
+        name: "dptName",
+      },
+    ])
+    .then((data) => {
+      db.query(
+        `INSERT INTO departments (name) VALUES (?)`,
+        data.dptName,
+        (err) => {
+          if (err) {
+            console.error(err);
+          }
+          console.log(`${data.dptName} has been added to the database.`);
+          viewDepts();
+        }
+      );
+    });
 }
 
 initialize();
