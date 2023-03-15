@@ -72,7 +72,7 @@ function viewDepts() {
 }
 
 function viewRoles() {
-  db.query(`SELECT * FROM roles`, (err, result) => {
+  db.query(`SELECT roles.title, roles.id, roles.salary, departments.name FROM roles JOIN departments ON roles.dept_id = departments.id`, (err, result) => {
     if (err) {
       console.error(err);
     }
@@ -114,5 +114,6 @@ function addDept() {
       );
     });
 }
+
 
 initialize();
