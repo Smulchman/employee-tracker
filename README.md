@@ -13,7 +13,7 @@ Please note: this app is not yet completed.
 
 ## Usage
 
-You can view a video of the app in use [here](https://drive.google.com/file/d/1QCzaLrW0CPDRfpe2dGC--JA9VfFyALM5/view) \
+You can view a video of the app in use [here](https://drive.google.com/file/d/1QCzaLrW0CPDRfpe2dGC--JA9VfFyALM5/view)
 
 To use this app, you need to download the repository to your local machine.\
 Then use npm i to initialize the node modules required.\
