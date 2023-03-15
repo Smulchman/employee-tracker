@@ -138,6 +138,8 @@ function addDept() {
     });
 }
 
+// this function is called when the user selects the 'add a role' option from the initial query
+// It takes the user through 3 prompts and will attempt to enter the given values into the database as a new role.
 function addRole() {
   inquirer
     .prompt([
@@ -162,37 +164,46 @@ function addRole() {
       data.id = tempID;
       return data;
     })
+    // this second function was an attempt to eliminate what I think/ thought might be a problem with synchronicity
+    // while this did not solve my troubles, it did still work and so it remains.
     .then((data) => {
       db.query(
-        `INSERT INTO roles (title, salary, dept_id)
-      VALUES (${data.roleName}, ${data.roleSalary}, ${data.id})`,
+        `INSERT INTO roles (title, salary, dept_id) VALUES ('${data.roleName}', ${data.roleSalary}, ${data.id})`,
         (err, result) => {
           if (err) {
             console.error(err);
+          } else {
+            console.log(`${data.roleName} successfully added to database!`);
           }
-          console.log(`${data.roleName} successfully added to database!`);
         }
       );
       viewRoles();
     });
 }
 
+// to be completed at a later date
 function addEmployee() {
   inquirer
     .prompt([
       {
         type: "input",
-        message: "Please enter a name for the department",
+        message: "This is a placeholder, Sorry :'(",
         name: "dptName",
       },
     ])
     .then((data) => {
-      db.query();
+        return;
+    //   db.query();
     });
 }
 
+// to be completed at a later date
 function updateRole() {}
 
+// The getDeptId function was created as a limited solution to grabbing the department id from the database based one whatever string a user inputs. The hope was that it would be flexible and would be compatable with any departments the user might add.
+// this function caused me immense trouble. From what I could gather, I was getting a sync error so I made a brief effort to set the function up as async but gave up for the sake of time. The code commented out below was my non async attempt.
+// Essentially console logging data was giving me either an Object or undefined. The sql code in the string works in mysql and the query itself does properly give the value, albeit in an object inside an array.
+// The problem was getting that value out of the fb.query and into the rest of the function. I just could not get it to work.
 function getDeptId(deptName) {
   //   let data = db.query(
   //     `SELECT id FROM departments WHERE name='${deptName}'`).then(
@@ -228,6 +239,4 @@ function getDeptId(deptName) {
   return id;
 }
 
-getDeptId("Finance");
-
-// initialize();
+initialize();

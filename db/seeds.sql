@@ -1,3 +1,5 @@
+-- these values are just intended as initial values so that the functionality of the command prompt app can be properly demonstrated.
+
 INSERT INTO departments (name)
 VALUES ("Finance"),
        ("Human Relations"),
